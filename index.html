@@ -1,85 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    table {
-      border-collapse: collapse;
-      width: 70%;
-      margin-top: 20px;
-      margin: auto;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 70%;
+        margin-top: 20px;
+        margin: auto;
+      }
 
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
 
-    th {
-      background-color: #f2f2f2;
-    }
+      th {
+        background-color: #f2f2f2;
+      }
 
-    .delete-btn {
-      background-color: #f44336;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      cursor: pointer;
-    }
+      .delete-btn {
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+      }
 
-    .delete-btn:hover {
-      background-color: #d32f2f;
-    }
-  </style>
-  <title>Employee Table</title>
-</head>
-<body>
+      .delete-btn-name {
+        background-color: #f44336;
+      }
 
-  <h2 style="text-align: center;">Employee Information</h2>
+      .delete-btn-country {
+        background-color: #2196f3;
+      }
 
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Country</th>
-        <th>Designation</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>John Doe</td>
-        <td>USA</td>
-        <td>Manager</td>
-        <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
-      </tr>
-      <tr>
-        <td>Jane Smith</td>
-        <td>Canada</td>
-        <td>Engineer</td>
-        <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
-      </tr>
-      <tr>
-        <td>Ahmed Ali</td>
-        <td>Pakistan</td>
-        <td>Developer</td>
-        <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
-      </tr>
-      <!-- Add more rows as needed -->
-    </tbody>
-  </table>
+      .delete-btn-designation {
+        background-color: #4caf50;
+      }
 
-  <script>
-    function deleteRow(button) {
-      var row = button.parentNode.parentNode;
-      row.parentNode.removeChild(row);
-    }
-  </script>
+      .delete-btn:hover {
+        opacity: 0.8;
+      }
+    </style>
+    <title>Employee Table</title>
+  </head>
+  <body>
+    <h2 style="text-align: center">Employee Information</h2>
 
-</body>
+    <table id="employeeTable">
+      <thead>
+        <div style="text-align: justify">
+          <button
+            class="delete-btn delete-btn-name"
+            onclick="deleteColumn('Name')">
+            Delete Name
+          </button>
+          <button
+            class="delete-btn delete-btn-country"
+            onclick="deleteColumn('Country')">
+            Delete Country
+          </button>
+          <button
+            class="delete-btn delete-btn-designation"
+            onclick="deleteColumn('Designation')">
+            Delete Designation
+          </button>
+        </div>
+        <tr>
+          <th>Name</th>
+          <th>Country</th>
+          <th>Designation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>John Doe</td>
+          <td>USA</td>
+          <td>Manager</td>
+        </tr>
+        <tr>
+          <td>Jane Smith</td>
+          <td>Canada</td>
+          <td>Engineer</td>
+        </tr>
+        <tr>
+          <td>Ahmed Ali</td>
+          <td>Pakistan</td>
+          <td>Developer</td>
+        </tr>
+        <!-- Add more rows as needed -->
+      </tbody>
+    </table>
+
+    <script>
+      function deleteColumn(columnName) {
+        var table = document.getElementById("employeeTable");
+        var header = table.getElementsByTagName("th");
+        var columnIndex = -1;
+
+        // Find the index of the column to delete
+        for (var i = 0; i < header.length; i++) {
+          if (header[i].textContent === columnName) {
+            columnIndex = i;
+            break;
+          }
+        }
+
+        if (columnIndex !== -1) {
+          var rows = table.getElementsByTagName("tr");
+
+          for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName("td");
+
+            // Check if the cell exists before trying to remove it
+            if (cells[columnIndex]) {
+              cells[columnIndex].parentNode.removeChild(cells[columnIndex]);
+            }
+          }
+
+          // Remove the column header
+          header[columnIndex].parentNode.removeChild(header[columnIndex]);
+
+          // Remove the button
+          var buttons = document.getElementsByClassName("delete-btn");
+          for (var i = 0; i < buttons.length; i++) {
+            if (buttons[i].textContent.includes(columnName)) {
+              buttons[i].parentNode.removeChild(buttons[i]);
+              break; 
+            }
+          }
+        }
+      }
+    </script>
+  </body>
 </html>
